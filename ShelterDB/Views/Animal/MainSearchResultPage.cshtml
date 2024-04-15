@@ -1,0 +1,32 @@
+﻿<h4>Search By Name and Status</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="MainSearchResults">
+            <div class="form-group">
+                <label class="control-label"></label>
+                <input name="searchName" class="form-control" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label"></label>
+                <select name="searchStatus" class="form-control">
+                    <option> </option>
+                    <option>Available For Adoption</option>
+                    <option>Under Vet Care</option>
+                </select>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,65 @@
+﻿@model ShelterDB.Models.AnimalModel
+
+<h4>AnimalModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="InsertAnimal">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Breed" class="control-label"></label>
+                <input asp-for="Breed" class="form-control" />
+                <span asp-validation-for="Breed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnimalDob" class="control-label"></label>
+                <input type="date"asp-for="AnimalDob" class="form-control" />
+                <span asp-validation-for="AnimalDob" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Color" class="control-label"></label>
+                <input asp-for="Color" class="form-control" />
+                <span asp-validation-for="Color" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Microchip" class="control-label"></label>
+                <input asp-for="Microchip" class="form-control" />
+                <span asp-validation-for="Microchip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnimalImg" class="control-label"></label>
+                <input asp-for="AnimalImg" class="form-control" />
+                <span asp-validation-for="AnimalImg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnimalStatus" class="control-label"></label>
+                <select asp-for="AnimalStatus" class="form-control">
+                    <option>Available For Adoption</option>
+                    <option>Under Vet Care</option>
+                </select>
+                <span asp-validation-for="AnimalStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

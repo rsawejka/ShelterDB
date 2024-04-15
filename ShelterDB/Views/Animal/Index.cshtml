@@ -1,0 +1,18 @@
+﻿@{
+    if (@TempData["deleted"] == null)
+    {
+        
+    }
+    else
+    {
+        <script>alert('@TempData["deleted"]')</script>
+    }
+}
+
+
+
+<partial name="SearchById.cshtml" />
+@TempData["error"]
+<!--create a search form that takes in name and status and pulls by status-->
+<partial name="MainSearchResultPage.cshtml" />
+
