@@ -79,7 +79,7 @@ namespace ShelterDB.Controllers
             return View("SingleAnimalDetails", animals.GetAnimalById(animal.Id));
         }
 
-        public ActionResult DeleteAnimal(int id) 
+        public IActionResult DeleteAnimal(int id) 
         {
             AnimalsDAO animals = new AnimalsDAO();
             AnimalModel animal = animals.GetAnimalById(id);
@@ -88,5 +88,46 @@ namespace ShelterDB.Controllers
             return RedirectToAction("index");
         }
 
+        public IActionResult AddVetTreatment(int AnimalId) 
+        {
+        return View();
+        }  
+        public IActionResult ProcessAddVetTreatment(VetTreatmentModel vetTreatment) 
+        {
+            AnimalsDAO vetTreatments = new AnimalsDAO();
+            vetTreatments.InsertVetTreatments(vetTreatment);
+            // var animalId = animal.Id;
+            //var lastId = animals.GetLastAnimalId();
+            return View("SingleAnimalDetails", vetTreatments.GetAnimalById(vetTreatment.AnimalId));
+        }
+        public IActionResult AllAnimalVetTreatments(int AnimalId)
+        {
+            AnimalsDAO vetTreatments = new AnimalsDAO();
+
+            return View("AllAnimalVetTreatments", vetTreatments.GetAllAnimalVetTreatments(AnimalId));
+        }
+
+        public IActionResult SingleAllAnimalDetails(int AnimalId)
+        {
+            AnimalsDAO animalsDetails = new AnimalsDAO();
+            //check and see if animal exsits
+           // animals.SeeIfExists(id);
+          //  var exsits = animals.SeeIfExists(id);
+
+          //  if (exsits == true)
+          //  {
+                return View(animalsDetails.GetAllAnimalDetailsById(AnimalId));
+          //  }
+        //    else
+         //   {
+                //ViewBag.doesnotexits = "doesnotexits";
+                //  return View("Index");
+          //      TempData["error"] = "does not exsist";
+          //      return RedirectToAction("index");
+
+
+            }
+        }
+
     }
-}
+

@@ -74,11 +74,11 @@ namespace ShelterDB.Services
         public List<AnimalModel> GetAllAvailableAnimals()
         {
             throw new NotImplementedException();
-        }       
+        }
         public List<AnimalModel> GetAllVetCareAnimals()
         {
             throw new NotImplementedException();
-        }        
+        }
         public List<AnimalModel> GetAllAnimals()
         {
             List<AnimalModel> foundAnimals = new List<AnimalModel>();
@@ -118,7 +118,47 @@ namespace ShelterDB.Services
             }
             return foundAnimals;
         }
-        
+        public List<VetTreatmentModel> GetAllAnimalVetTreatments(int id)
+        {
+            List<VetTreatmentModel> foundVetTreatments = new List<VetTreatmentModel>();
+
+            string sqlStatement = "SELECT * FROM dbo.VetTreatments WHERE AnimalId = @animalId";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+                command.Parameters.AddWithValue("@animalId", id);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var AnimalDateGivenReader = (DateTime)reader[2];
+                        var DateGiven = AnimalDateGivenReader.Date.ToShortDateString();
+                        var AnimalDateDueReader = (DateTime)reader[3];
+                        var DateDue = AnimalDateDueReader.Date.ToShortDateString();
+                        var AnimalId = Convert.ToInt32(reader[4]);
+                        foundVetTreatments.Add(new VetTreatmentModel
+                        {
+                            Id = (int)reader[0],
+                            Type = (string)reader[1],
+                            DateGiven = DateGiven,
+                            DateDue = DateDue,
+                            AnimalId = AnimalId,
+
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return foundVetTreatments;
+        }
+
         public AnimalModel GetAnimalById(int id)
         {
             AnimalModel foundAnimal = null;
@@ -137,7 +177,7 @@ namespace ShelterDB.Services
                     while (reader.Read())
                     {
 
-                        var AnimalDobReader = (DateTime) reader[8];
+                        var AnimalDobReader = (DateTime)reader[8];
                         var AnimalDob = AnimalDobReader.Date.ToShortDateString();
 
                         foundAnimal = new AnimalModel
@@ -151,7 +191,7 @@ namespace ShelterDB.Services
                             AnimalStatus = (string)reader[6],
                             Type = (string)reader[7],
                             AnimalDob = AnimalDob,
-                            
+
                         };
                     }
                 }
@@ -162,6 +202,54 @@ namespace ShelterDB.Services
             }
             return foundAnimal;
         }
+        public AllAnimalDetailsModel GetAllAnimalDetailsById(int id)
+        {
+            AllAnimalDetailsModel foundAllAnimalDetails = null;
+
+            string sqlStatement = "SELECT * FROM dbo.Animals INNER JOIN dbo.VetTreatments ON dbo.Animals.Id = dbo.VetTreatments.AnimalId WHERE dbo.Animals.Id = @animalId";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+                command.Parameters.AddWithValue("@animalId", id);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        var AnimalDobReader = (DateTime)reader[8];
+                        var AnimalDob = AnimalDobReader.Date.ToShortDateString();
+
+                        foundAllAnimalDetails = new AllAnimalDetailsModel
+                        {
+                            Id = (int)reader[0],
+                            Name = (string)reader[1],
+                            Breed = (string)reader[2],
+                            Color = (string)reader[3],
+                            Microchip = (string)reader[4],
+                            AnimalImg = (string)reader[5],
+                            AnimalStatus = (string)reader[6],
+                            Type = (string)reader[7],
+                            AnimalDob = AnimalDob,
+                            VetTreatmentId = (int)reader[9],
+                            VetTreatmentType = (string)reader[10],
+                            DateGiven = (string)reader[11].ToString(),
+                            DateDue = (string)reader[12].ToString(),
+                            AnimalId = Convert.ToInt32(reader[13]),
+
+                        };
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return foundAllAnimalDetails;
+        } 
 
         public int InsertAnimal(AnimalModel animal)
         {
@@ -377,5 +465,51 @@ namespace ShelterDB.Services
             }
             return animalExists;
         }
+
+        public int InsertVetTreatments(VetTreatmentModel vetTreatment)
+        {
+            List<VetTreatmentModel> newVetTreatment = new List<VetTreatmentModel>();
+            int newIdNumber = -1;
+
+            string sqlStatement = "INSERT INTO dbo.VetTreatments (Type, DateGiven, DateDue, AnimalId) VALUES (@Type, @DateGiven, @DateDue, @AnimalId)";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+                command.Parameters.AddWithValue("@Type", vetTreatment.Type);
+                command.Parameters.AddWithValue("@DateGiven", vetTreatment.DateGiven);
+                command.Parameters.AddWithValue("@DateDue", vetTreatment.DateDue);
+                command.Parameters.AddWithValue("@AnimalId", vetTreatment.AnimalId);
+
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        newVetTreatment.Add(new VetTreatmentModel
+                        {
+                            Id = (int)reader[0],
+                            Type = (string)reader[1],
+                            DateGiven = (string)reader[2],
+                            DateDue = (string)reader[3],
+                            AnimalId = (int)reader[4],
+
+
+
+
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return newIdNumber;
+        }
     }
+
 }
+
