@@ -15,11 +15,11 @@ namespace ShelterDB.Controllers
             AnimalsDAO animals = new AnimalsDAO();
 
             return View("AllAnimals", animals.GetAllAnimals());
-        } 
+        }
         public IActionResult CreateAnimal()
         {
             return View();
-        }        
+        }
         public IActionResult InsertAnimal(AnimalModel animal)
         {
             AnimalsDAO animals = new AnimalsDAO();
@@ -29,6 +29,10 @@ namespace ShelterDB.Controllers
             return View("SingleAnimalDetails", animals.GetAnimalById(lastId));
         }
         public IActionResult SearchById()
+        {
+            return View();
+        } 
+        public IActionResult SearchVetTreatmnetsByDueDate()
         {
             return View();
         }
@@ -53,11 +57,11 @@ namespace ShelterDB.Controllers
 
             }
         }
-        public IActionResult MainSearchResultPage() 
+        public IActionResult MainSearchResultPage()
         {
             return View();
-        }        
-        public IActionResult MainSearchResults(String searchName, String searchStatus) 
+        }
+        public IActionResult MainSearchResults(String searchName, String searchStatus)
         {
             AnimalsDAO animals = new AnimalsDAO();
 
@@ -79,7 +83,7 @@ namespace ShelterDB.Controllers
             return View("SingleAnimalDetails", animals.GetAnimalById(animal.Id));
         }
 
-        public IActionResult DeleteAnimal(int id) 
+        public IActionResult DeleteAnimal(int id)
         {
             AnimalsDAO animals = new AnimalsDAO();
             AnimalModel animal = animals.GetAnimalById(id);
@@ -88,11 +92,11 @@ namespace ShelterDB.Controllers
             return RedirectToAction("index");
         }
 
-        public IActionResult AddVetTreatment(int AnimalId) 
+        public IActionResult AddVetTreatment(int AnimalId)
         {
-        return View();
-        }  
-        public IActionResult ProcessAddVetTreatment(VetTreatmentModel vetTreatment) 
+            return View();
+        }
+        public IActionResult ProcessAddVetTreatment(VetTreatmentModel vetTreatment)
         {
             AnimalsDAO vetTreatments = new AnimalsDAO();
             vetTreatments.InsertVetTreatments(vetTreatment);
@@ -103,31 +107,22 @@ namespace ShelterDB.Controllers
         public IActionResult AllAnimalVetTreatments(int AnimalId)
         {
             AnimalsDAO vetTreatments = new AnimalsDAO();
+            List<VetTreatmentModel> vetTreatmentList = vetTreatments.GetAllAnimalVetTreatments(AnimalId);
 
-            return View("AllAnimalVetTreatments", vetTreatments.GetAllAnimalVetTreatments(AnimalId));
+            return View(vetTreatmentList);
         }
 
-        public IActionResult SingleAllAnimalDetails(int AnimalId)
+        public IActionResult GetAllVetTreamentsByDueDate(string DateDue)
         {
-            AnimalsDAO animalsDetails = new AnimalsDAO();
-            //check and see if animal exsits
-           // animals.SeeIfExists(id);
-          //  var exsits = animals.SeeIfExists(id);
+            {
+                AnimalsDAO vetTreatments = new AnimalsDAO();
 
-          //  if (exsits == true)
-          //  {
-                return View(animalsDetails.GetAllAnimalDetailsById(AnimalId));
-          //  }
-        //    else
-         //   {
-                //ViewBag.doesnotexits = "doesnotexits";
-                //  return View("Index");
-          //      TempData["error"] = "does not exsist";
-          //      return RedirectToAction("index");
-
-
+                List<AllVetTreatmentsModel> vetTreatmentList = vetTreatments.GetAllAnimalVetTreatmentsByDueDate(DateDue);
+                return View(vetTreatmentList);
             }
-        }
+        }            
+    
+    }
 
     }
 

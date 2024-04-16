@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ShelterDB.Models.AnimalModel>
+﻿@model IEnumerable<ShelterDB.Models.AllVetTreatmentsModel>
 <table class="table">
     <thead>
         <tr>
@@ -23,13 +23,23 @@
             <th>
                 @Html.DisplayNameFor(model => model.Microchip)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AnimalImg)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.AnimalStatus)
             </th>
-            <th></th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.VetTreatmentType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateGiven)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateDue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnimalId)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -57,13 +67,19 @@
                 @Html.DisplayFor(modelItem => item.Microchip)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AnimalImg)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.AnimalStatus)
             </td>
             <td>
-                    @Html.ActionLink("Details", "SingleAnimalDetails", new {  id=item.Id })
+                @Html.DisplayFor(modelItem => item.VetTreatmentType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateGiven)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateDue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnimalId)
             </td>
         </tr>
 }

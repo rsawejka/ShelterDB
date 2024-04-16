@@ -2,7 +2,7 @@
 
 namespace ShelterDB.Models
 {
-    public class AllAnimalDetailsModel
+    public class AllVetTreatmentsModel
     {
         [DisplayName("Animal ID")]
         public int Id { get; set; }
