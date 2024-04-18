@@ -70,8 +70,37 @@
                     @Html.ActionLink("Edit", "EditAnimal", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "SingleAnimalDetails", new {  id=item.Id  }) |
                     @Html.ActionLink("Delete", "DeleteAnimal", new {  id=item.Id  })
+                    
             </td>
         </tr>
 }
+        <ul class="pagination">
+
+            @{
+                for (int x = ViewBag.NumberOfPaginationButtonsBack; x < ViewBag.numberOfPaginationButtons; x++)
+                {
+                  
+                        if (ViewBag.currentPage == x)
+                        {
+                            <li class="page-item page-item active">
+                                @Html.ActionLink(x.ToString(), "AllAnimals", new { page = x, currentPage = x }, new { @class = "page-link" })
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                @Html.ActionLink(x.ToString(), "AllAnimals", new { page = x, currentPage = x }, new { @class = "page-link" })
+                            </li>
+                        }
+                    }
+                 
+
+
+
+                    }
+
+
+                    
+        </ul>
     </tbody>
 </table>

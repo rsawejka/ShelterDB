@@ -10,11 +10,46 @@ namespace ShelterDB.Controllers
         {
             return View();
         }
-        public IActionResult AllAnimals()
+        public IActionResult AllAnimals(int page = 1, int pageSize = 10, int currentPage = 1)
         {
+
+            
             AnimalsDAO animals = new AnimalsDAO();
 
-            return View("AllAnimals", animals.GetAllAnimals());
+            var totalCount = animals.GetAllAnimals().Count();
+            var totalPages = (int)Math.Ceiling((decimal)totalCount / pageSize) + 1;
+            var animalsPerPage = animals.GetAllAnimals().Skip((page -1) * pageSize).Take(pageSize).ToList();
+            var numberOfPaginationButtons = totalCount / 200;
+            ViewBag.TotalPages = totalPages;
+            var pagesForward = currentPage + 10;
+            var NumberOfPaginationButtonsBack = currentPage - 10;
+            if(NumberOfPaginationButtonsBack < 1)
+            {
+                ViewBag.NumberOfPaginationButtonsBack = 1;
+            }
+            else
+            {
+                ViewBag.NumberOfPaginationButtonsBack = NumberOfPaginationButtonsBack;
+
+            }   
+            var xMorePages = (totalPages - currentPage) + currentPage;
+            if(pagesForward > totalPages)
+            {
+                
+                ViewBag.numberOfPaginationButtons = xMorePages;
+            }
+            else
+            {
+                ViewBag.numberOfPaginationButtons = pagesForward;
+
+
+            }
+
+
+            //ViewBag.NumberOfPaginationButtonsBack = currentPage - 10;
+            ViewBag.currentPage = currentPage;
+
+            return View("AllAnimals", animalsPerPage);
         }
         public IActionResult CreateAnimal()
         {
