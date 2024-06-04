@@ -36,5 +36,10 @@ namespace ShelterDB.Models
         public string DateDue { get; set; }
 
         public int AnimalId { get; set; }
+
+        public int ManId { get; set; }  
+
+        public string ManName { get; set; }
+        public string ManType { get; set; }
     }
 }

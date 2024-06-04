@@ -142,7 +142,9 @@ namespace ShelterDB.Controllers
         public IActionResult AllAnimalVetTreatments(int AnimalId)
         {
             AnimalsDAO vetTreatments = new AnimalsDAO();
-            List<VetTreatmentModel> vetTreatmentList = vetTreatments.GetAllAnimalVetTreatments(AnimalId);
+            
+            List<AllVetTreatmentsModel> vetTreatmentList = vetTreatments.GetAllAnimalVetTreatments(AnimalId);
+            ViewBag.Name = vetTreatments.GetAnimalById(AnimalId).Name;
 
             return View(vetTreatmentList);
         }

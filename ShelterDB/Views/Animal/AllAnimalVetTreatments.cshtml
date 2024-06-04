@@ -1,44 +1,53 @@
-﻿@model IEnumerable<ShelterDB.Models.VetTreatmentModel>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateGiven)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateDue)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AnimalId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateGiven)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateDue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AnimalId)
-            </td>
-        </tr>
+﻿@model IEnumerable<ShelterDB.Models.AllVetTreatmentsModel>
+
+@{
+    ViewData["Title"] = "AllAnimalVetTreatments";
+
+    int incroment = 0;
+    string collapse = "collapse";
 }
-    </tbody>
-</table>
+
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                @ViewBag.Name
+            </button>
+        </h2>
+        @foreach (var item in Model)
+        {
+            incroment++;
+            string incromentedCollapse = collapse + incroment;
+
+
+
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+
+
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@incromentedCollapse" aria-expanded="false" aria-controls="@incromentedCollapse">
+                                <div>
+                                    @Html.DisplayFor(modelItem => item.VetTreatmentId)
+                                </div>
+                                <div>
+                                    @Html.DisplayFor(modelItem => item.VetTreatmentType)
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="@incromentedCollapse" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                @Html.DisplayFor(modelItem => item.ManName)
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        }
+    </div>
+

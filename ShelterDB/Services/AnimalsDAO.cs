@@ -83,7 +83,7 @@ namespace ShelterDB.Services
         {
             List<AnimalModel> foundAnimals = new List<AnimalModel>();
 
-            string sqlStatement = "SELECT * FROM dbo.Animals";
+            string sqlStatement = "SELECT Id, Name, Breed, Color, Microchip, AnimalImg, AnimalStatus, Type, AnimalDob FROM dbo.Animals";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -118,11 +118,29 @@ namespace ShelterDB.Services
             }
             return foundAnimals;
         }
-        public List<VetTreatmentModel> GetAllAnimalVetTreatments(int id)
+        public List<AllVetTreatmentsModel> GetAllAnimalVetTreatments(int id)
         {
-            List<VetTreatmentModel> foundVetTreatments = new List<VetTreatmentModel>();
+            List<AllVetTreatmentsModel> foundVetTreatments = new List<AllVetTreatmentsModel>();
 
-            string sqlStatement = "SELECT * FROM dbo.VetTreatments WHERE AnimalId = @animalId";
+            string sqlStatement = @"Select 
+                                    dbo.Animals.Id, 
+                                    dbo.Animals.Name, 
+                                    dbo.Animals.Breed,
+                                    dbo.Animals.Color, 
+                                    dbo.Animals.Microchip, 
+                                    dbo.Animals.AnimalImg, 
+                                    dbo.Animals.AnimalStatus, 
+                                    dbo.Animals.Type, 
+                                    dbo.Animals.AnimalDob, 
+                                    dbo.VetTreatments.Id, 
+                                    dbo.VetTreatments.Type,
+                                    dbo.Manufacturer.Id,
+                                    dbo.Manufacturer.name,
+                                    dbo.Manufacturer.type
+                                    FROM dbo.Animals 
+                                    INNER JOIN dbo.VetTreatments ON dbo.Animals.Id = dbo.VetTreatments.AnimalId 
+                                    LEFT JOIN dbo.Manufacturer On dbo.VetTreatments.ManId = dbo.Manufacturer.Id
+                                    WHERE dbo.Animals.Id = @animalId";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -135,18 +153,41 @@ namespace ShelterDB.Services
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        var AnimalDateGivenReader = (DateTime)reader[2];
-                        var DateGiven = AnimalDateGivenReader.Date.ToShortDateString();
-                        var AnimalDateDueReader = (DateTime)reader[3];
-                        var DateDue = AnimalDateDueReader.Date.ToShortDateString();
-                        var AnimalId = Convert.ToInt32(reader[4]);
-                        foundVetTreatments.Add(new VetTreatmentModel
+                        //var AnimalDateGivenReader = (DateTime)reader[2];
+                        // var DateGiven = AnimalDateGivenReader.Date.ToShortDateString();
+                        //var AnimalDateDueReader = (DateTime)reader[3];
+                        // var DateDue = AnimalDateDueReader.Date.ToShortDateString();
+                          var VetTreatmentId = Convert.ToInt32(reader[9]);
+                        var manId = 0;
+                        if(reader[11] == null)
+                        {
+                            manId = 0;
+                        }
+                        else
+                        {
+                            manId = Convert.ToInt32(reader[11]);
+                        }
+                        
+                        foundVetTreatments.Add(new AllVetTreatmentsModel
                         {
                             Id = (int)reader[0],
-                            Type = (string)reader[1],
-                            DateGiven = DateGiven,
-                            DateDue = DateDue,
-                            AnimalId = AnimalId,
+                            Name = (string)reader[1],
+                            Breed = (string)reader[2],
+                            Color = (string)reader[3],
+                            Microchip = (string)reader[4],
+                            AnimalImg = (string)reader[5],
+                            AnimalStatus = (string)reader[6],
+                            Type = (string)reader[7],
+                            VetTreatmentId = VetTreatmentId,
+                            VetTreatmentType = (string)reader[10],
+                            ManId = manId,
+                            ManName = (string)reader[12],
+                            ManType = (string)reader[13],
+
+
+                            // DateGiven = DateGiven,
+                            // DateDue = DateDue,
+                            //  AnimalId = AnimalId,
 
                         });
                     }
@@ -212,7 +253,7 @@ namespace ShelterDB.Services
         {
             AnimalModel foundAnimal = null;
 
-            string sqlStatement = "SELECT * FROM dbo.Animals WHERE Id = @Id";
+            string sqlStatement = "SELECT Id, Name, Breed, Color, Microchip, AnimalImg, AnimalStatus, Type, AnimalDob FROM dbo.Animals WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -312,7 +353,7 @@ namespace ShelterDB.Services
 
             if(searchStatus == null) 
             {
-                 sqlStatement = "SELECT * FROM dbo.Animals WHERE Name LIKE @Name";
+                 sqlStatement = "SELECT Id, Name, Breed, Color, Microchip, AnimalImg, AnimalStatus, Type, AnimalDob FROM dbo.Animals WHERE Name LIKE @Name";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand command = new SqlCommand(sqlStatement, connection);
@@ -349,7 +390,7 @@ namespace ShelterDB.Services
             }
             else
             {
-                 sqlStatement = "SELECT * FROM dbo.Animals WHERE Name LIKE @Name AND AnimalStatus = @Status";
+                 sqlStatement = "SELECT Id, Name, Breed, Color, Microchip, AnimalImg, AnimalStatus, Type, AnimalDob FROM dbo.Animals WHERE Name LIKE @Name AND AnimalStatus = @Status";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand command = new SqlCommand(sqlStatement, connection);
@@ -436,7 +477,7 @@ namespace ShelterDB.Services
         {
             var animalExists = false;
 
-            string sqlStatement = "SELECT * FROM dbo.Animals WHERE Id = @Id";
+            string sqlStatement = "SELECT Id, Name, Breed, Color, Microchip, AnimalImg, AnimalStatus, Type, AnimalDob FROM dbo.Animals WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
